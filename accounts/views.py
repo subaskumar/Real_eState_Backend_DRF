@@ -18,6 +18,8 @@ class SignupView(CreateAPIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors)  # it return error code with status 200
+        
             # headers = self.get_success_headers(serializer.data)
             # return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST, headers=headers)
+            # if we return error with status code , the field vaidation error will not send to frontend,

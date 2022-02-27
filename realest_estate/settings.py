@@ -1,4 +1,3 @@
-
 from pathlib import Path,PurePath
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -161,4 +160,3 @@ EMAIL_HOST_PASSWORD = 'subasRashmi@123'
 CORS_ORIGIN_ALLOW_ALL = True
 
 AUTH_USER_MODEL = 'accounts.UserAccount'
-

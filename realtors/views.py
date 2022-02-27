@@ -5,17 +5,18 @@ from .models import Realtor
 from .serializers import RealtorSerializer
 
 class RealtorListView(ListAPIView):
-    permission_classes = (AllowAny, )
+    # permission_classes = [IsAuthenticated, ]
     queryset = Realtor.objects.all()
     serializer_class = RealtorSerializer
     pagination_class = None
 
 class RealtorView(RetrieveAPIView):
+    # permission_classes = [AllowAny, ]
     queryset = Realtor.objects.all()
     serializer_class = RealtorSerializer
 
 class TopSellerView(ListAPIView):
-    permission_classes = (AllowAny, )
+    # permission_classes = [IsAuthenticated, ]
     queryset = Realtor.objects.filter(top_seller__in=[True])
     serializer_class = RealtorSerializer
     pagination_class = None

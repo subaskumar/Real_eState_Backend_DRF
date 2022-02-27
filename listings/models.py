@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.timezone import now
 from realtors.models import Realtor
+from django.template.defaultfilters import slugify
 
 class Listing(models.Model):
     class SaleType(models.TextChoices):
@@ -13,7 +14,7 @@ class Listing(models.Model):
         TOWNHOUSE = 'Townhouse'
 
     realtor = models.ForeignKey(Realtor, on_delete=models.DO_NOTHING)
-    slug = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(null=True, blank=True, unique=True)
     title = models.CharField(max_length=150)
     address = models.CharField(max_length=150)
     city = models.CharField(max_length=100)
@@ -53,3 +54,31 @@ class Listing(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def save(self, *args, **kwargs):  # new
+        if not self.slug:
+            self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
+    
+    # def save(self, *args, **kwargs):
+    #     if not self.slug:
+    #            self.slug = create_slug(self.title)
+    #     return super(Listing, self).save(*args, **kwargs)
+    
+# and also we can autogenerate slug by using signal
+  
+# @receiver(pre_save, sender=Post)
+# def pre_save_receiver(sender, instance, *args, **kwargs):
+#    if not instance.slug:
+#        instance.slug = unique_slug_generator(instance)
+
+# def create_slug(title, new_slug=None):
+#     slug = slugify(title, allow_unicode = True)
+#     if new_slug is not None:
+#         slug = new_slug
+#     qs = Posts.objects.filter(slug=slug).order_by("-id")
+#     exists = qs.exists()
+#     if exists:
+#         new_slug = "%s-%s"%(slug, qs.first().id)
+#         return create_slug(title, new_slug=new_slug)
+#     return slug
